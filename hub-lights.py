@@ -4,6 +4,8 @@ import board
 import neopixel
 from networktables import NetworkTables
 
+# Article: https://opensource.com/article/21/1/light-display-raspberry-pi
+
 # As a client to connect to a robot
 NetworkTables.initialize(server='roborio-XXX-frc.local')
 sd = NetworkTables.getTable('SmartDashboard')
