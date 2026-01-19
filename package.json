@@ -1,0 +1,19 @@
+{
+  "name": "home-field-2026",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.18",
+    "express": "^5.2.1",
+    "lucide-react": "^0.562.0",
+    "socket.io": "^4.8.3",
+    "socketio": "^1.0.0",
+    "tailwindcss": "^4.1.18"
+  }
+}
