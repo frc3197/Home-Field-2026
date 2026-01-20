@@ -3,20 +3,29 @@ import time
 import board
 import neopixel
 from networktables import NetworkTables
+import math
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 # Article: https://opensource.com/article/21/1/light-display-raspberry-pi
 
 # As a client to connect to a robot
-NetworkTables.initialize(server='roborio-XXX-frc.local')
+NetworkTables.initialize(server='roborio-3197-frc.local')
+NetworkTables.setUpdateRate(50)
+fms = NetworkTables.getTable('FMSInfo')
 sd = NetworkTables.getTable('SmartDashboard')
-otherNumber = sd.getNumber('otherNumber')
+
+loopid = 0
+
+period_value = fms.getAutoUpdateValue("FMSControlData", -1)
 
 # Choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D18
 # NeoPixels must be connected to D10, D12, D18 or D21 to work.
 pixel_pin = board.D18
 
 # The number of NeoPixels
-num_pixels = 100
+num_pixels = 50
 
 # The order of the pixel colors - RGB or GRB. Some NeoPixels have red and green reversed!
 # For RGBW NeoPixels, simply change the ORDER to RGBW or GRBW.
@@ -56,28 +65,118 @@ def rainbow_cycle(wait):
             pixels[i] = wheel(pixel_index & 255)
         pixels.show()
         time.sleep(wait)
+        
+def orange_solid():
+    for i in range(num_pixels):
+        pixels[i] = (100, 252, 3)
+        
+    pixels.show()
 
+def active(isRed):
+    
+    for i in range(num_pixels):
+        if isRed:
+            pixels[i] = (0, 255, 0)
+        else:
+            pixels[i] = (0, 0, 255)
+        
+    pixels.show()
+    
+def inActive():
+    
+    for i in range(num_pixels):
+        pixels[i] = (0, 0, 0)
+        
+    pixels.show()
+    
+def getIsActive(period, time, isRed, isActiveFirst):
+    # If auto, then active
+    if period == 35:
+        return True
+    
+    # If endgame, then active
+    if time < 30:
+        return True
+    
+    if time > 130:
+        return True
+    
+    importantTime = time - 30
+    
+    if math.floor(importantTime / 25) % 2 == 0:
+        return not isActiveFirst
+        
+    return isActiveFirst
+
+def getIsInWarning(time, period, isRed, firstAllianceInactive):
+    if time > 130 and time < 133:
+        if isRed and firstAllianceInactive == "B":
+            return False
+        else:
+            if (not isRed) and firstAllianceInactive == "R":
+                return False
+        
+    return (time - 30) % 25 < 3 and (not period == 35) and time < 135 and time > 35
+
+def warningLights(isRed, loopid):
+    brightness = math.floor((math.sin(loopid/20) + 1) / 2 * 255)
+    for i in range(num_pixels):
+        if isRed:
+            pixels[i] = (0, brightness, 0)
+        else:
+            pixels[i] = (0, 0, brightness)
+        
+    pixels.show()
+
+def race(loopid):
+    
+    for i in range(num_pixels):
+        pixels[i] = (0, 0, 0)
+    
+    scaled = math.floor(loopid / 50)
+    
+    pixels[scaled % 50] = (100, 252, 3)
+    pixels[(scaled + 1) % 50] = (100, 252, 3)
+        
+    pixels.show()
 
 while True:
-    # Comment this line out if you have RGBW/GRBW NeoPixels
-    pixels.fill((255, 0, 0))
-    # Uncomment this line if you have RGBW/GRBW NeoPixels
-    # pixels.fill((255, 0, 0, 0))
-    pixels.show()
-    time.sleep(1)
-
-    # Comment this line out if you have RGBW/GRBW NeoPixels
-    pixels.fill((0, 255, 0))
-    # Uncomment this line if you have RGBW/GRBW NeoPixels
-    # pixels.fill((0, 255, 0, 0))
-    pixels.show()
-    time.sleep(1)
-
-    # Comment this line out if you have RGBW/GRBW NeoPixels
-    pixels.fill((0, 0, 255))
-    # Uncomment this line if you have RGBW/GRBW NeoPixels
-    # pixels.fill((0, 0, 255, 0))
-    pixels.show()
-    time.sleep(1)
-
-    rainbow_cycle(0.001)  # rainbow cycle with 1ms delay per step
+    isRed = fms.getBoolean("IsRedAlliance", False)
+    #print(isRed)
+    period = period_value.value
+    #print(period)
+    matchTimeRemaining = sd.getNumber("MatchTime", -1)
+    firstAllianceInactive = fms.getNumber("GameSpecificMessage", "B")
+    
+    loopid = loopid+1
+    #print(NetworkTables.isConnected())
+    
+    if not NetworkTables.isConnected():
+        race(loopid)
+        continue
+    
+    if matchTimeRemaining < 0:
+        orange_solid()
+        continue
+    
+    isActiveFirst = False
+    
+    if isRed:
+        if firstAllianceInactive == "B":
+            isActiveFirst = True
+    
+    if not isRed:
+        if firstAllianceInactive == "R":
+            isActiveFirst = True
+    
+    isActive = getIsActive(period, matchTimeRemaining, isRed, isActiveFirst)
+    
+    if isActive:
+        if getIsInWarning(matchTimeRemaining, period, isRed, firstAllianceInactive):
+            warningLights(isRed, loopid)
+        else:
+            active(isRed)
+    else:
+        inActive()
+    
+    #rainbow_cycle(0.001)  # rainbow cycle with 1ms delay per step
