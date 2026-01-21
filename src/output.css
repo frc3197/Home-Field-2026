@@ -1,3 +1,21 @@
+@font-face {
+  font-family: 'Poppins'; /* Name you will use in your CSS */
+  src: local('Poppins Regular'), /* Optional: checks if the font is installed locally on the user's device */
+       url('fonts/Poppins-Regular.ttf') format('ttf');
+  font-weight: 400; /* Corresponds to 'Regular' weight */
+  font-style: normal;
+  font-display: swap; /* Helps control font loading behavior to prevent layout shifts */
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: local('Poppins Bold'),
+       url('fonts/Poppins-Bold.ttf') format('ttf');
+  font-weight: 700; /* Corresponds to 'Bold' weight */
+  font-style: normal;
+  font-display: swap;
+}
+
 /*! tailwindcss v4.1.18 | MIT License | https://tailwindcss.com */
 @layer properties;
 @layer theme, base, components, utilities;
