@@ -1,0 +1,8 @@
+[Unit]
+Description = Home-Field-2026 Home FMS Target
+After       = hf26-checkforupdates.service
+Requires    = network-online.target
+Wants       = network-online.target hf26-hublights.service hf26-fuel.service hf26-node.service
+
+[Install]
+WantedBy    = multi-user.target

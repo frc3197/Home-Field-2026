@@ -1,0 +1,85 @@
+#! /usr/bin/env bash
+
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root (or with sudo)."
+   exit 1
+fi
+
+echo  "Beginning Installation process of HomeField-26"
+
+echo "Installing Deps"
+
+apt-get update -y
+wait
+
+apt-get upgrade -y
+wait
+
+apt-get install curl python3 git build-essential nodejs npm
+wait
+
+echo  "Configuring Network"
+
+nmcli connection show
+wait
+
+nmcli connection modify "eth0" \
+    ipv4.adresses 10.31.97.99/8 \
+    ipv4.dns "1.1.1.1,8.8.8.8,8.8.4.4" \
+    ipv4.method manual \
+
+wait
+
+nmcli connection down "eth0"
+wait
+
+nmcli connection up "eth0"
+wait
+
+echo "Creating Directory"
+
+cd /opt
+wait
+
+echo "Cloning Git Repo"
+git clone https://github.com/frc3197/Home-Field-2026/
+wait
+
+echo "Installing Node Modules"
+npm install
+wait
+
+echo "Installing SystemD Services"
+cp systemd/* /etc/systemd/system/
+wait
+
+systemctl restart-daemon
+wait
+
+systemctl enable HomeField26.target
+wait
+
+systemctl enable hf26-checkforupdate.service
+wait
+
+systemctl enable hf26-hublights.service
+wait
+
+systemctl enable hf26-fuel.service
+wait
+
+systemctl enable hf26-node.service
+wait
+
+echo "Reboot required"
+
+while true; do
+    read -p "Do you want to reboot now? (y/n) " yn
+    case $yn in
+        [Yy]* ) echo "Rebooting..."; break;;
+        [Nn]* ) echo "Exiting Installer..."; exit;;
+        * ) echo "Invalid response, please enter y or n.";;
+    esac
+done
+
+systemctl reboot

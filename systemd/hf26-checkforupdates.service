@@ -1,0 +1,12 @@
+[Unit]
+Description = Update Checker HomeField 2026
+Requires    = network-online.target
+Wants       = network-online.target
+
+[Service]
+User             = root
+WorkingDirectory = /opt/Home-Field-2026/
+ExecStart        = /usr/bin/git pull
+
+[Install]
+WantedBy    = HomeField26.target
