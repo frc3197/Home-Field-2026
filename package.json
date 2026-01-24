@@ -5,9 +5,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "FRC3197",
   "license": "ISC",
-  "description": "",
+  "description": "Home Field Management",
   "dependencies": {
     "@tailwindcss/cli": "^4.1.18",
     "express": "^5.2.1",

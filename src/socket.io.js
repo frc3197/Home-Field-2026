@@ -83,8 +83,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * Looks up an existing `Manager` for multiplexing.
 	 * If the user summons:
 	 *
-	 *   `io('http://localhost/a');`
-	 *   `io('http://localhost/b');`
+	 *   `io('http://10.31.97.99/a');`
+	 *   `io('http://10.31.97.99/b');`
 	 *
 	 * We reuse the existing instance based on same scheme/port/host,
 	 * and we initialize sockets for each namespace.
@@ -225,7 +225,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    obj = parseuri(uri);
 	  }
 
-	  // make sure we treat `localhost:80` and `localhost` equally
+	  // make sure we treat `10.31.97.99:80` and `10.31.97.99` equally
 	  if (!obj.port) {
 	    if (/^(http|ws)$/.test(obj.protocol)) {
 	      obj.port = '80';
@@ -3870,7 +3870,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  this.agent = opts.agent || false;
 	  this.hostname = opts.hostname ||
-	    (global.location ? location.hostname : 'localhost');
+	    (global.location ? location.hostname : '10.31.97.99');
 	  this.port = opts.port || (global.location && location.port
 	      ? location.port
 	      : (this.secure ? 443 : 80));

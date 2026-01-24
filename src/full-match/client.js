@@ -48,7 +48,7 @@ socket.on("disconnect", () => {
 
 function add() {
     console.log('Clicked add.')
-    fetch("http://localhost:3000/add", {
+    fetch("http://10.31.97.99:3000/add", {
         method: "POST",
         body: JSON.stringify({
             amount: 1
@@ -61,7 +61,7 @@ function add() {
 
 function subtract() {
     console.log('Clicked subtract.')
-    fetch("http://localhost:3000/add", {
+    fetch("http://10.31.97.99:3000/add", {
         method: "POST",
         body: JSON.stringify({
             amount: -1
@@ -75,7 +75,7 @@ function subtract() {
 function reset() {
     console.log('Clicked reset.')
     fuelOld = 0;
-    fetch("http://localhost:3000/reset", {
+    fetch("http://10.31.97.99:3000/reset", {
         method: "POST",
         body: JSON.stringify({
         }),
@@ -118,7 +118,7 @@ function startMatch() {
 
     reset();
 
-    fetch("http://localhost:3000/set-match", {
+    fetch("http://10.31.97.99:3000/set-match", {
         method: "POST",
         body: JSON.stringify({
             match: true
@@ -133,7 +133,7 @@ function endMatch() {
     if(!matchInProgress)
         return;
 
-    fetch("http://localhost:3000/set-match", {
+    fetch("http://10.31.97.99:3000/set-match", {
         method: "POST",
         body: JSON.stringify({
             match: false

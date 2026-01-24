@@ -1,9 +1,11 @@
+const path = require('path');
 const { createServer } = require('node:http');
 const { Server } = require('socket.io');
 const express = require('express');
 const app = express();
 const server = createServer(app);
 const port = 3000;
+const ipAddr = "10.31.97.99";
 const io = new Server(server);
 
 var fuelScored = 0;
@@ -13,7 +15,7 @@ io.on('connection', (socket) => {
   socket.emit('fuelScoredUpdate', fuelScored);
 });
 
-app.use(express.static('src'));
+app.use(express.static(path.join(__dirname, 'src')));
 app.use(express.json());
 
 app.post('/add', (req, res) => {
@@ -39,6 +41,6 @@ app.post('/set-match', (req, res) => {
   res.json({ success: true, message: "Match in progress set" });
 });
 
-server.listen(port, '0.0.0.0', () => {
-  console.log(`Home field interface listening on port ${port}`);
+server.listen(port, ipAddr, () => {
+  console.log(`Home field interface listening on ${ipAddr} with the port of ${port}`);
 });

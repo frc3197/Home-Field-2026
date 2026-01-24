@@ -1,0 +1,14 @@
+[Unit]
+Description=Starts the Home Field service
+After=network.target
+Wants=network.target
+
+[Service]
+# Change user to your raspberry pi's username!
+User=pi 
+Restart=always
+# Change directory to the directory of the repo
+ExecStart=node /home/pi/Desktop/Home-Field-2026/
+
+[Install]
+WantedBy=multi-user.target
