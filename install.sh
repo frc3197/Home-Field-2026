@@ -15,8 +15,10 @@ wait
 apt-get upgrade -y
 wait
 
-apt-get install curl python3 git build-essential nodejs npm
+apt-get install -y curl python3 git build-essential nodejs npm
 wait
+
+python3 -m pip install --break-system-packages -y robotpy
 
 echo  "Configuring Network"
 
@@ -43,6 +45,9 @@ wait
 
 echo "Cloning Git Repo"
 git clone https://github.com/frc3197/Home-Field-2026/
+wait
+
+cd /opt/Home-Field-2026/
 wait
 
 echo "Installing Node Modules"
