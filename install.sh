@@ -26,7 +26,7 @@ nmcli connection show
 wait
 
 nmcli connection modify "netplan-eth0" \
-    ipv4.adresses 10.31.97.99/8 \
+    ipv4.addresses 10.31.97.99/8 \
     ipv4.dns "1.1.1.1,8.8.8.8,8.8.4.4" \
     ipv4.method manual \
 
