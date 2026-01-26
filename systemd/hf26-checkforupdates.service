@@ -6,6 +6,7 @@ Wants       = network-online.target
 [Service]
 User             = root
 WorkingDirectory = /opt/Home-Field-2026/
+ExecStartPre=/bin/sh -c 'until ip addr show wlan0 | grep -q "inet "; do sleep 1; done'
 ExecStart        = /usr/bin/git pull
 
 [Install]
