@@ -76,15 +76,8 @@ wait
 systemctl enable hf26-node.service
 wait
 
-echo "Reboot required"
-
-while true; do
-    read -p "Do you want to reboot now? (y/n) " yn
-    case $yn in
-        [Yy]* ) echo "Rebooting..."; break;;
-        [Nn]* ) echo "Exiting Installer..."; exit;;
-        * ) echo "Invalid response, please enter y or n.";;
-    esac
-done
+echo "Reboot required, In 5 Seconds"
+sleep 5
+wait
 
 systemctl reboot
