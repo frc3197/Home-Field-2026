@@ -1,0 +1,14 @@
+[Unit]
+Description = Node Server for HomeField 2026
+After       = network-online.target hf26-fuel.service
+Wants       = network-online.target
+
+[Service]
+User             = root
+WorkingDirectory = /opt/Home-Field-2026/
+ExecStart        = /usr/bin/node /opt/Home-Field-2026/index.js
+Restart          = on-failure
+RestartSec       = 5
+
+[Install]
+WantedBy = HomeField26.target
