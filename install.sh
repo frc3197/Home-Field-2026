@@ -58,7 +58,7 @@ echo "Installing SystemD Services"
 cp systemd/* /etc/systemd/system/
 wait
 
-systemctl restart-daemon
+systemctl daemon-reload
 wait
 
 systemctl enable HomeField26.target
