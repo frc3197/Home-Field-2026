@@ -25,17 +25,17 @@ echo  "Configuring Network"
 nmcli connection show
 wait
 
-nmcli connection modify "eth0" \
+nmcli connection modify "netplan-eth0" \
     ipv4.adresses 10.31.97.99/8 \
     ipv4.dns "1.1.1.1,8.8.8.8,8.8.4.4" \
     ipv4.method manual \
 
 wait
 
-nmcli connection down "eth0"
+nmcli connection down "netplan-eth0"
 wait
 
-nmcli connection up "eth0"
+nmcli connection up "netplan-eth0"
 wait
 
 echo "Creating Directory"
