@@ -18,7 +18,7 @@ wait
 apt-get install -y curl python3 git build-essential nodejs npm
 wait
 
-python3 -m pip install --break-system-packages robotpy Adafruit-circuitpython-neopixel Adafruit-blinka
+python3 -m pip install --break-system-packages pynetworktables Adafruit-circuitpython-neopixel Adafruit-blinka
 
 echo  "Configuring Network"
 
