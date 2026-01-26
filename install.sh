@@ -64,7 +64,7 @@ wait
 systemctl enable HomeField26.target
 wait
 
-systemctl enable hf26-checkforupdate.service
+systemctl enable hf26-checkforupdates.service
 wait
 
 systemctl enable hf26-hublights.service
