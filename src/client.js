@@ -22,7 +22,7 @@ socket.on("disconnect", () => {
 
 function add() {
     console.log('Clicked add.')
-    fetch("http://10.31.97.99:3000/add", {
+    fetch("/add", {
         method: "POST",
         body: JSON.stringify({
             amount: 1
@@ -35,7 +35,7 @@ function add() {
 
 function subtract() {
     console.log('Clicked subtract.')
-    fetch("http://10.31.97.99:3000/add", {
+    fetch("/add", {
         method: "POST",
         body: JSON.stringify({
             amount: -1
@@ -48,7 +48,7 @@ function subtract() {
 
 function reset() {
     console.log('Clicked reset.')
-    fetch("http://10.31.97.99:3000/reset", {
+    fetch("/reset", {
         method: "POST",
         body: JSON.stringify({
         }),

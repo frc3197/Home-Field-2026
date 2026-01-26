@@ -4,3 +4,45 @@ html, body {
     font-family: "Poppins", sans-serif;
     font-weight: 300;
 }
+
+@font-face {
+  font-family: 'Poppins'; /* Name you will use in your CSS */
+  src: local('Poppins Regular'), /* Optional: checks if the font is installed locally on the user's device */
+       url('fonts/Poppins-Regular.ttf') format('truetype');
+  font-weight: 400; /* Corresponds to 'Regular' weight */
+  font-style: normal;
+  font-display: swap; /* Helps control font loading behavior to prevent layout shifts */
+}
+
+@font-face {
+  font-family: 'Poppins'; /* Name you will use in your CSS */
+  src: local('Poppins Regular'), /* Optional: checks if the font is installed locally on the user's device */
+       url('fonts/Poppins-Light.ttf') format('truetype');
+  font-weight: 300; /* Corresponds to 'Regular' weight */
+  font-style: normal;
+  font-display: swap; /* Helps control font loading behavior to prevent layout shifts */
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: local('Poppins Bold'),
+       url('fonts/Poppins-Bold.ttf') format('truetype');
+  font-weight: 700; /* Corresponds to 'Bold' weight */
+  font-style: normal;
+  font-display: swap;
+}
+
+#match-selection-container::-webkit-scrollbar {
+    width: 12px;
+}
+
+#match-selection-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    border: 3px solid transparent; 
+    background-clip: padding-box;
+}
+
+#match-selection-container::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+}

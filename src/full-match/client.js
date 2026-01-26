@@ -12,6 +12,7 @@ const fuelContainer = document.getElementById('fuel-container');
 const notInMatchStyle = 'aspect-square h-full px-5 bg-[#f5df31] rounded-3xl inset-shadow-sm inset-shadow-[#c9b300]/100 select-none flex items-center justify-center';
 const inMatchStyle = 'aspect-square h-full px-5 bg-[#f55a42] rounded-3xl inset-shadow-sm inset-shadow-[#f55a42]/100 select-none flex items-center justify-center';
 
+const matchTagSelect = document.getElementById('match-tag-select');
 const savePopup = document.getElementById('save-popup');
 savePopup.style.display = 'none';
 
@@ -19,6 +20,8 @@ var matchInProgress = false;
 handleMatchInProgress(matchInProgress);
 
 var fuelOld = 0;
+var fuelTimestamps = [];
+var startingTime = -1;
 
 socket.on('matchInProgressUpdate', (status) => {
     console.log(status ? 'Match in progress.' : 'No match.');
@@ -27,11 +30,14 @@ socket.on('matchInProgressUpdate', (status) => {
 });
 
 socket.on('fuelScoredUpdate', (newFuelScored) => {
-    if(!matchInProgress) {
+    if (!matchInProgress) {
         fuelScoreText.innerText = fuelOld;
         return;
     }
     console.log(newFuelScored);
+
+    fuelTimestamps.push(Math.floor(Date.now() - startingTime)/1000);
+
     fuelScoreText.innerText = newFuelScored;
     fuelOld = newFuelScored;
 });
@@ -47,8 +53,7 @@ socket.on("disconnect", () => {
 });
 
 function add() {
-    console.log('Clicked add.')
-    fetch("http://10.31.97.99:3000/add", {
+    fetch("/add", {
         method: "POST",
         body: JSON.stringify({
             amount: 1
@@ -60,8 +65,7 @@ function add() {
 }
 
 function subtract() {
-    console.log('Clicked subtract.')
-    fetch("http://10.31.97.99:3000/add", {
+    fetch("/add", {
         method: "POST",
         body: JSON.stringify({
             amount: -1
@@ -73,9 +77,8 @@ function subtract() {
 }
 
 function reset() {
-    console.log('Clicked reset.')
     fuelOld = 0;
-    fetch("http://10.31.97.99:3000/reset", {
+    fetch("/reset", {
         method: "POST",
         body: JSON.stringify({
         }),
@@ -113,12 +116,12 @@ function handleMatchInProgress(match) {
 }
 
 function startMatch() {
-    if(matchInProgress)
+    if (matchInProgress)
         return;
 
     reset();
 
-    fetch("http://10.31.97.99:3000/set-match", {
+    fetch("/set-match", {
         method: "POST",
         body: JSON.stringify({
             match: true
@@ -126,14 +129,22 @@ function startMatch() {
         headers: {
             "Content-type": "application/json; charset=UTF-8"
         }
-    });
+    }).then(response => response.json())
+        .then(data => {
+            console.log(data);
+            if (data.success) {
+                startingTime = Date.now();
+                fuelTimestamps = [];
+            }
+        })
+        .catch(error => alert('Error:', error));
 }
 
 function endMatch() {
-    if(!matchInProgress)
+    if (!matchInProgress)
         return;
 
-    fetch("http://10.31.97.99:3000/set-match", {
+    fetch("/set-match", {
         method: "POST",
         body: JSON.stringify({
             match: false
@@ -154,13 +165,33 @@ function openSavePopup() {
 
 function closeSavePopup() {
     savePopup.style.display = 'none';
-
 }
 
-function saveMatch() {
+async function saveMatch() {
     const name = document.getElementById('match-name-input').value;
-    if(name.length < 5) {
+    if (name.length < 5) {
         alert("Name must be longer than 5 characters.");
         return;
     }
+
+    await fetch("/save-match", {
+        method: "POST",
+        body: JSON.stringify({
+            amount: fuelOld,
+            timestamps: fuelTimestamps,
+            name,
+            date: Date.now(),
+            tag: matchTagSelect.value
+        }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            if (data.success)
+                closeSavePopup();
+        })
+        .catch(error => alert('Error:', error));
 }
