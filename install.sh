@@ -15,7 +15,7 @@ wait
 apt-get upgrade -y
 wait
 
-apt-get install -y curl python3 git build-essential nodejs npm gpiod python3-libgpiod
+apt-get install -y curl python3 git build-essential nodejs npm gpiod python3-libgpiod python3-rpi-lgpio python3-lgpio
 wait
 
 apt-get remove -y python3-rpi.gpio
