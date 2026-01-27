@@ -15,7 +15,10 @@ wait
 apt-get upgrade -y
 wait
 
-apt-get install -y curl python3 git build-essential nodejs npm
+apt-get install -y curl python3 git build-essential nodejs npm gpiod python3-libgpiod
+wait
+
+apt-get remove -y python3-rpi.gpio
 wait
 
 python3 -m pip install --break-system-packages pynetworktables Adafruit-circuitpython-neopixel Adafruit-blinka
