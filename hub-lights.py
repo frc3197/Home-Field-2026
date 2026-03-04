@@ -15,6 +15,7 @@ NetworkTables.initialize(server='roborio-3197-frc.local')
 NetworkTables.setUpdateRate(50)
 fms = NetworkTables.getTable('FMSInfo')
 sd = NetworkTables.getTable('SmartDashboard')
+ak = NetworkTables.getTable('AdvantageKit')
 
 loopid = 0
 
@@ -145,7 +146,7 @@ while True:
     #print(isRed)
     period = period_value.value
     #print(period)
-    matchTimeRemaining = sd.getNumber("MatchTime", -1)
+    matchTimeRemaining = ak.getNumber("DriverStation/MatchTime", -1)
     firstAllianceInactive = fms.getNumber("GameSpecificMessage", "B")
     
     loopid = loopid+1

@@ -5,9 +5,17 @@ const connectionStatus = document.getElementById('connection-status');
 
 const socket = io();
 
+var fuelOld = 0;
+var fuelTimestamps = [];
+var startingTime = -1;
+
 socket.on('fuelScoredUpdate', (newFuelScored) => {
     console.log(newFuelScored);
+
+    fuelTimestamps.push(Math.floor(Date.now() - startingTime)/1000);
+
     fuelScoreText.innerText = newFuelScored;
+    fuelOld = newFuelScored;
 });
 
 socket.on("connect", () => {
@@ -19,44 +27,6 @@ socket.on("disconnect", () => {
     connectionStatus.innerText = 'Disconnected';
     connectionStatus.className = 'select-none fixed top-5 right-5 bg-gray-400/100 border-1 border-gray-800 rounded-lg px-3 py-1 shadow-md';
 });
-
-function add() {
-    console.log('Clicked add.')
-    fetch("/add", {
-        method: "POST",
-        body: JSON.stringify({
-            amount: 1
-        }),
-        headers: {
-            "Content-type": "application/json; charset=UTF-8"
-        }
-    });
-}
-
-function subtract() {
-    console.log('Clicked subtract.')
-    fetch("/add", {
-        method: "POST",
-        body: JSON.stringify({
-            amount: -1
-        }),
-        headers: {
-            "Content-type": "application/json; charset=UTF-8"
-        }
-    });
-}
-
-function reset() {
-    console.log('Clicked reset.')
-    fetch("/reset", {
-        method: "POST",
-        body: JSON.stringify({
-        }),
-        headers: {
-            "Content-type": "application/json; charset=UTF-8"
-        }
-    });
-}
 
 const sidebar = document.getElementById('sidebar-container');
 const openSidebarButton = document.getElementById('open-sidebar-button');

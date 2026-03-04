@@ -6,8 +6,8 @@ const express = require('express');
 const app = express();
 const server = createServer(app);
 const port = 3000;
-const ipAddr = "10.31.97.99";
-//const ipAddr = "0.0.0.0";
+//const ipAddr = "homefield-2026";
+const ipAddr = "0.0.0.0";
 const io = new Server(server);
 
 var fuelScored = 0;

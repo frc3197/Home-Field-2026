@@ -3,7 +3,7 @@ import threading
 import requests
 import time
 
-post_url = 'http://10.31.97.99:3000/add'
+post_url = 'http://homefield-2026:3000/add'
 body = {'amount': 1}
 
 SENSOR_1_PIN = 4
